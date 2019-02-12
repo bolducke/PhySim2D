@@ -84,16 +84,16 @@ namespace PhySim2D.Sim
 
             Rigidbody s = BodyFactory.CreatePolygon(t1, new MassData(3, 3), v1);
             Rigidbody s2 = BodyFactory.CreatePolygon(t3, new MassData(1, 3), v1);
-            //Rigidbody c = BodyFactory.CreateCircleBody(1f, new MassData(1, 1), t1);
+            Rigidbody c = BodyFactory.CreateCircleBody(1f, new MassData(1, 1), t2);
             //Rigidbody seg = BodyFactory.CreateSegmentBody(new KVector2(-1, 0), new KVector2(1, 0), new MassData(1,1), t2);
             rect = BodyFactory.CreatePolygon(t2, new MassData(0,0), v);
             Bodies.Add(s);
             Bodies.Add(rect);
-            Bodies.Add(s2);
+            Bodies.Add(c);
             s.AddImpulseAtWPos(new KVector2(3f, 0), s.State.Transform.Position);
 
             s.State.ForceGenerators.Add("G", new GravityHMR(new KVector2(0, -2)));
-            s2.State.ForceGenerators.Add("G", new GravityHMR(new KVector2(0,-2)));
+            c.State.ForceGenerators.Add("G", new GravityHMR(new KVector2(0,-2)));
 
             Integrator = new RK4();
         }
