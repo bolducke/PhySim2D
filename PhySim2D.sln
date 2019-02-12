@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhySim2D", "PhySim2D\PhySim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhySim2D.UI", "PhySim2D.UI\PhySim2D.UI.csproj", "{925EB947-C208-46C6-A0F5-D771B9E34305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhySim2D.UnitTest", "PhySim2D.UnitTest\PhySim2D.UnitTest.csproj", "{DA1A385A-DD3F-4A83-AF76-4577E52BF0E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhySim2D.UnitTest", "PhySim2D.UnitTest\PhySim2D.UnitTest.csproj", "{E2EBC30C-F935-4662-8C5C-735E9936B09C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{925EB947-C208-46C6-A0F5-D771B9E34305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925EB947-C208-46C6-A0F5-D771B9E34305}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925EB947-C208-46C6-A0F5-D771B9E34305}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA1A385A-DD3F-4A83-AF76-4577E52BF0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA1A385A-DD3F-4A83-AF76-4577E52BF0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA1A385A-DD3F-4A83-AF76-4577E52BF0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA1A385A-DD3F-4A83-AF76-4577E52BF0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2EBC30C-F935-4662-8C5C-735E9936B09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2EBC30C-F935-4662-8C5C-735E9936B09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2EBC30C-F935-4662-8C5C-735E9936B09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EBC30C-F935-4662-8C5C-735E9936B09C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
