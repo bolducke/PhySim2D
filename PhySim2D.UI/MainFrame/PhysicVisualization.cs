@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using PhySim2D.DebugViews;
+using PhySim2D.UI.Views;
 using PhySim2D.UI.Components;
 
 namespace PhySim2D.UI

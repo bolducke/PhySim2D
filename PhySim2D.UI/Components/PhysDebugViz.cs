@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using PhySim2D.UI.DisplayUtils;
 using PhySim2D.Collision.Colliders;
-using PhySim2D.DebugViews;
+using PhySim2D.UI.Views;
 using System.Collections.Generic;
 using PhySim2D.Collision;
 using PhySim2D.Tools;
@@ -40,7 +40,7 @@ namespace PhySim2D.UI.Components
         private float time = 0;
         private bool isRunning = false;
 
-        public DebugViewFlags Flags { get; set; }
+        internal DebugViewFlags Flags { get; set; }
 
         private List<Contact> list;
 
