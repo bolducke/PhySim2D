@@ -133,7 +133,7 @@ namespace PhySim2D.Collision.Narrowphase
             int nextIndex = index + 1 < a.Vertices.Count ? index + 1 : 0;
 
             Face polFace = a.ComputeFace(index);
-            KVector2 dir = Face.Direction(polFace);
+            KVector2 dir = KVector2.Normalize(Face.Direction(polFace));
 
             KVector2 posCircle = b.Transform.TransformPointLW(b.LPosition);
 
@@ -168,7 +168,7 @@ namespace PhySim2D.Collision.Narrowphase
                 WPenetration = separation,  
             };
 
-            contact.Manifold.WNormal = KVector2.Normalize(cSegDir);
+            contact.Manifold.WNormal = KVector2.Normalize(polFace.WNormal);
             contact.Manifold.ContactPoints[0] = cp;
             contact.Manifold.Count = 1;
 
