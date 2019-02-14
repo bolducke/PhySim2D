@@ -1,8 +1,5 @@
 ﻿using PhySim2D.Collision.Colliders;
-using System.Runtime.CompilerServices;
 
-
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
 namespace PhySim2D.Dynamics
 {
     internal struct Fixture

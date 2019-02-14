@@ -13,7 +13,6 @@ using PhySim2D.Collision.Broadphase.Brute;
 using PhySim2D.Dynamics.Integrator;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UI")]
 namespace PhySim2D.Sim
 {
 

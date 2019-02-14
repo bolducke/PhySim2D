@@ -2,8 +2,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
-[assembly: InternalsVisibleTo("PhysicEngine.UI")]
 namespace PhySim2D.Collision.Colliders
 {
     [DataContract]

@@ -1,9 +1,7 @@
 ﻿using PhySim2D.Collision.Colliders;
 using PhySim2D.Dynamics;
 using PhySim2D.Tools;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
 namespace PhySim2D.Factories
 {
     internal class BodyFactory

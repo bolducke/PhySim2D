@@ -1,7 +1,5 @@
 ﻿using PhySim2D.Dynamics;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
 namespace PhySim2D.Collision
 {
     internal struct Contact

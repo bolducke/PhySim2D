@@ -10,16 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Collision\1-Broadphase\Dynamic AABB Tree\" />
-    <Folder Include="Collision\1-Broadphase\Sweep and Prune\" />
+    <Folder Include="Collision\Broadphase\Dynamic AABB Tree\" />
+    <Folder Include="Collision\Broadphase\Sweep and Prune\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
 </Project>

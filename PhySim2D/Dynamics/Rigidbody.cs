@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
 namespace PhySim2D.Dynamics
 {
     [DataContract]

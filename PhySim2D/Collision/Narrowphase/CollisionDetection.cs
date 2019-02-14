@@ -2,9 +2,7 @@
 using PhySim2D.Sim;
 using PhySim2D.Tools;
 using System;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("PhysicEngine.UnitTest")]
 namespace PhySim2D.Collision.Narrowphase
 {
     internal static class CollisionDetection
