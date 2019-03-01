@@ -17,6 +17,26 @@ namespace PhySim2D.UnitTest.Tools
             Assert.AreEqual(new KVector2(0, 1), tx.TransformPointLW(point));
         }
 
+        [TestMethod]
+        public void TestPointRotation1()
+        {
+            KVector2 point = new KVector2(1, 0);
+            KTransform tx = new KTransform(KVector2.Zero, (float)(System.Math.PI / 2.0), new KVector2(1));
+
+            Assert.AreEqual(new KVector2(0,-1), tx.TransformPointWL(point));
+        }
+
+        [TestMethod]
+        public void TestPointRotation2()
+        {
+            KVector2 point = new KVector2(1, 0);
+            KTransform tx = new KTransform(KVector2.Zero, (float)(System.Math.PI / 2.0), new KVector2(1));
+
+
+            Assert.AreEqual(new KVector2(1, 0), tx.TransformPointWL(tx.TransformPointLW(point)));
+        }
+
+
 
         [TestMethod]
         public void TestPointTranslation()
@@ -47,6 +67,15 @@ namespace PhySim2D.UnitTest.Tools
         }
 
         [TestMethod]
+        public void TestDir1()
+        {
+            KVector2 dir = new KVector2(1, 0);
+            KTransform tx = new KTransform(KVector2.Zero, 0, new KVector2(5,4));
+
+            Assert.AreEqual(new KVector2(5, 0), tx.TransformDirLW(dir));
+        }
+
+        [TestMethod]
         public void TestNormal()
         {
             KVector2 dir = new KVector2(1, 0);
@@ -61,16 +90,16 @@ namespace PhySim2D.UnitTest.Tools
             KVector2 point = new KVector2(31, -4);
             KTransform tx = new KTransform(KVector2.One,(System.Math.PI /2.0), new KVector2(5));
 
-            Assert.AreEqual(new KVector2(1, 6), tx.TransformPointWL(point));
+            Assert.AreEqual(new KVector2(-1, -6), tx.TransformPointWL(point));
         }
 
         [TestMethod]
         public void TestLocalToWorld()
         {
-            KVector2 point = new KVector2(1, 6);
+            KVector2 point = new KVector2(-1, -6);
             KTransform tx = new KTransform(KVector2.One, (System.Math.PI /2), new KVector2(5));
 
-            Assert.AreEqual(new KVector2(31, -4), tx.TransformPointLW(point));
+            Assert.AreEqual(new KVector2(-29, 6), tx.TransformPointLW(point));
         }
 
         [TestMethod]
