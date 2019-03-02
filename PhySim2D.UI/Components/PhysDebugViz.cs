@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using PhySim2D.Collision;
 using PhySim2D.Tools;
 using PhySim2D.Dynamics;
+using System.Drawing.Drawing2D;
 
 namespace PhySim2D.UI.Components
 {
@@ -33,6 +34,7 @@ namespace PhySim2D.UI.Components
         }
     }
 
+
     public partial class PhysDebugViz : Control
     {
         private Scene scene = new Scene();
@@ -50,7 +52,7 @@ namespace PhySim2D.UI.Components
         {
             InitializeComponent();
             scene.ContactsInCollision += Scene_ContactsInCollision;
-
+            Flags |= DebugViewFlags.SHAPE;
         }
 
         private void Scene_ContactsInCollision(object sender, ContactInCollisionEventArgs e)
@@ -66,7 +68,7 @@ namespace PhySim2D.UI.Components
                 scene.DoStep(step);
                 time += step;
                 this.Invalidate();
-
+               
                 try
                 {
                     Thread.Sleep(20);
@@ -101,7 +103,8 @@ namespace PhySim2D.UI.Components
                 time += step;
                 this.Invalidate();
             }
-        }
+        
+         }
 
         public void Stop()
         {
@@ -249,7 +252,22 @@ namespace PhySim2D.UI.Components
 
         private void DrawCircle(Graphics g, Circle c, Color color)
         {
-            g.FillEllipse(new SolidBrush(color), (RectangleF)c.ComputeAABB());
+            Matrix mat = g.Transform.Clone();
+            Matrix trans = g.Transform.Clone();
+            trans.RotateAt((float)(c.Transform.Rotation * 360 / (2 * Math.PI)), new PointF((float)c.Transform.Position.X,(float)c.Transform.Position.Y));
+            g.Transform = trans;
+
+            RectangleF ellipse = new RectangleF
+            (
+             (float)(c.Transform.Position.X - c.Transform.Scale.X),
+             (float)(c.Transform.Position.Y - c.Transform.Scale.Y),
+             (float) c.Transform.Scale.X * 2,
+             (float) c.Transform.Scale.Y * 2
+             );
+
+            g.FillEllipse(new SolidBrush(color), ellipse);
+
+            g.Transform = mat;
         }
         #endregion
     }

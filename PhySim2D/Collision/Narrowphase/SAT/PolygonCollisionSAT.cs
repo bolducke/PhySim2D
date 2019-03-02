@@ -133,42 +133,37 @@ namespace PhySim2D.Collision.Narrowphase
             int nextIndex = index + 1 < a.Vertices.Count ? index + 1 : 0;
 
             Face polFace = a.ComputeFace(index);
-            KVector2 dir = KVector2.Normalize(Face.Direction(polFace));
 
-            KVector2 posCircle = b.Transform.TransformPointLW(b.LPosition);
+            KVector2 ldir = b.Transform.TransformNormalWL(Face.Direction(polFace));
+            KVector2 lPStart = b.Transform.TransformPointWL(polFace.WPStart);
+            KVector2 lPEnd = b.Transform.TransformPointWL(polFace.WPEnd);
 
             //Closest point on segment to circle center
-            double u = (posCircle - polFace.WPStart) * dir;
-            double v = (posCircle - polFace.WPEnd) * -dir;
+            double u = (b.LPosition - lPStart) * ldir;
+            double v = (b.LPosition - lPEnd) * -ldir;
 
-            KVector2 wPos;
+            KVector2 pos;
 
             if (u < 0)
             {
-                wPos = polFace.WPStart;
+                pos = lPStart;
             }
             else if (v < 0)
             {
-                wPos = polFace.WPEnd;
+                pos = lPEnd;
             }
             else
             {
-                wPos = polFace.WPStart + u / dir.Length() * dir;
+                pos = lPStart + u / ldir.Length() * ldir;
             }
-
-            KVector2 cSegDir = posCircle - wPos;
-
-            //More robust and accurate test
-            if (cSegDir.LengthSquared() > b.Radius * b.Radius)
-                return false;
 
             ContactPoint cp = new ContactPoint
             {
-                WPosition = wPos,
-                WPenetration = separation,  
+                WPosition = b.Transform.TransformPointLW(pos),
+                WPenetration = -separation,  
             };
 
-            contact.Manifold.WNormal = KVector2.Normalize(polFace.WNormal);
+            contact.Manifold.WNormal = polFace.WNormal;
             contact.Manifold.ContactPoints[0] = cp;
             contact.Manifold.Count = 1;
 

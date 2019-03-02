@@ -1,4 +1,5 @@
 ﻿using PhySim2D.Tools;
+using System;
 using System.Runtime.Serialization;
 
 namespace PhySim2D.Collision.Colliders
@@ -9,13 +10,9 @@ namespace PhySim2D.Collision.Colliders
         [DataMember(Order = 0)]
         public KVector2 LPosition { get; set; }
 
-        [DataMember(Order = 1)]
-        public float Radius { get; set; }
-
-        public Circle(KVector2 pos, float radius)
+        public Circle(KVector2 pos)
         {
             LPosition = pos;
-            Radius = radius;
             Type = ColliderType.CIRCLE;
             ComputeProperties();
         }
@@ -27,13 +24,16 @@ namespace PhySim2D.Collision.Colliders
 
         public override AABB ComputeAABB()
         {
-            KVector2 offset = new KVector2(Radius);
-            return new AABB(Transform.TransformPointLW(LPosition) - offset,Transform.TransformPointLW(LPosition) + offset);
+            KVector2 max = new KVector2(ComputeSupport(KVector2.XPos).X, ComputeSupport(KVector2.YPos).Y);
+            KVector2 min = new KVector2(ComputeSupport(KVector2.XNeg).X, ComputeSupport(KVector2.YNeg).Y);
+            return new AABB(min,max);
         }
 
         public override KVector2 ComputeSupport(KVector2 wDirN)
         {
-            return wDirN * Radius + Transform.TransformPointLW(LPosition);
+            KVector2 newPos = KVector2.Normalize(wDirN * Transform.MatLW) + LPosition;
+        
+            return Transform.TransformPointLW(newPos);
         }
     }
 }
