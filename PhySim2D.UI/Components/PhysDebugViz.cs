@@ -135,9 +135,6 @@ namespace PhySim2D.UI.Components
             axisX.Transform = new KTransform();
             axisY.Transform = new KTransform();
 
-            DrawSegment(g, axisX, Color.Beige, 0.1f);
-            DrawSegment(g, axisY, Color.Beige, 0.1f);
-
             foreach (Rigidbody b in scene.Bodies)
             {
 
@@ -171,28 +168,35 @@ namespace PhySim2D.UI.Components
             {
               
             }
-
-            if ((Flags & DebugViewFlags.CONTACTS_POINT) == DebugViewFlags.CONTACTS_POINT)
+            if (list != null)
             {
-                if (list != null)
-                    foreach (Contact c in list)
+                foreach (Contact c in list)
+                {
+                    Collider colA = c.FixtureA.Collider;
+                    Collider colB = c.FixtureB.Collider;
+
+                    if ((Flags & DebugViewFlags.CONTACTS_PAIR) == DebugViewFlags.CONTACTS_PAIR)
                     {
-
-
-                        Collider colA = c.FixtureA.Collider;
-                        Collider colB = c.FixtureB.Collider;
-
                         DrawShape(g, colB, Color.Yellow);
                         DrawShape(g, colA, Color.AntiqueWhite);
-                        
-
-                        for (int i = 0; i < c.Manifold.Count; i++)
-                        {
-                            DrawPoint(g, c.Manifold.ContactPoints[i].WPosition, Color.Red);
-                        }
                     }
+
+                    for (int i = 0; i < c.Manifold.Count; i++)
+                    {
+                        if ((Flags & DebugViewFlags.CONTACTS_NORMAL) == DebugViewFlags.CONTACTS_NORMAL)
+                            DrawVector(g, c.Manifold.WNormal, c.Manifold.ContactPoints[i].WPosition, Color.Red);
+
+                        if ((Flags & DebugViewFlags.CONTACTS_POINT) == DebugViewFlags.CONTACTS_POINT)
+                            DrawPoint(g, c.Manifold.ContactPoints[i].WPosition, Color.Red);
+                    }
+                }
             }
 
+            if ((Flags & DebugViewFlags.AXIS) == DebugViewFlags.AXIS)
+            {
+                DrawSegment(g, axisX, Color.Beige, 0.1f);
+                DrawSegment(g, axisY, Color.Beige, 0.1f);
+            }
         }
 
         private void DrawPoint(Graphics g, KVector2 position, Color c)
@@ -235,7 +239,7 @@ namespace PhySim2D.UI.Components
         private void DrawSegment(Graphics g, Segment seg, Color c, float thickness)
         {
             KVector2 start = seg.Transform.TransformPointLW(seg.LStart);
-            KVector2 end = seg.Transform.TransformPointLW(seg.RetrievePoint(1));
+            KVector2 end = seg.Transform.TransformPointLW(seg.LEnd);
             g.DrawLine(new Pen(c, thickness), (float) start.X,(float) start.Y,(float) end.X,(float) end.Y);
         }
 
