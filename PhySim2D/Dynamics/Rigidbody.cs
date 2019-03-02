@@ -81,13 +81,13 @@ namespace PhySim2D.Dynamics
         public void AddImpulseAtWPos(KVector2 wImpulse, KVector2 wPos)
         {
             KVector2 transformedCM = State.Transform.TransformPointLW(MassData.CenterOfMass);
-            State.AngVelocity += (wPos - transformedCM) % wImpulse * MassData.InvInertia;
+            State.AngVelocity -= (wPos - transformedCM) % wImpulse * MassData.InvInertia;
             State.Velocity += wImpulse * MassData.InvMass;
         }
 
         public void AddImpulseAtRelPosToCenter(KVector2 wImpulse, KVector2 relPos)
         {
-            State.AngVelocity += relPos % wImpulse * MassData.InvInertia;
+            State.AngVelocity -= relPos % wImpulse * MassData.InvInertia;
             State.Velocity += wImpulse * MassData.InvMass;
         }
 

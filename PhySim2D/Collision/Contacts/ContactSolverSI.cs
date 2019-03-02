@@ -38,7 +38,7 @@ namespace PhySim2D.Collision
                 KVector2 rA = wPosition - bodyA.State.Transform.TransformPointLW(bodyA.MassData.CenterOfMass);
                 KVector2 rB = wPosition - bodyB.State.Transform.TransformPointLW(bodyB.MassData.CenterOfMass);
                 KVector2 wNormal = c.Manifold.WNormal;
-                KVector2 relVitAB = bodyB.State.Velocity + rB % bodyB.State.AngVelocity  - bodyA.State.Velocity - rA % bodyA.State.AngVelocity;
+                KVector2 relVitAB = bodyB.State.Velocity + bodyB.State.AngVelocity % rB - bodyA.State.Velocity - bodyA.State.AngVelocity % rA;
 
                 if (relVitAB * wNormal >= 0 )
                    break;
@@ -62,8 +62,7 @@ namespace PhySim2D.Collision
             KVector2 momentum = impulse * wNormal;
 
             bodyA.AddImpulseAtRelPosToCenter(-momentum, rA);
-            bodyB.AddImpulseAtRelPosToCenter(momentum, rB);    
-
+            bodyB.AddImpulseAtRelPosToCenter(momentum, rB);
         }
 #endregion
 #region PositionConstraint
@@ -96,8 +95,8 @@ namespace PhySim2D.Collision
             KVector2 rA = wPosition - bodyA.State.Transform.TransformPointLW(bodyA.MassData.CenterOfMass);
             KVector2 rB = wPosition - bodyB.State.Transform.TransformPointLW(bodyB.MassData.CenterOfMass);
 
-            double rAXwNormal = wNormal * (bodyA.MassData.InvInertia * (rA % wNormal) % rA);
-            double rBXwNormal = wNormal * (bodyB.MassData.InvInertia * (rB % wNormal) % rB);
+            double rAXwNormal = (bodyA.MassData.InvInertia * (rA % wNormal) * (rA % wNormal));
+            double rBXwNormal = (bodyB.MassData.InvInertia * (rA % wNormal) * (rB% wNormal));
 
             double MassEff = bodyA.MassData.InvMass + bodyB.MassData.InvMass ;
 
