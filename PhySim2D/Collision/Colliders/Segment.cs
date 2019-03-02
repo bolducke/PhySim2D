@@ -1,6 +1,6 @@
-﻿using PhySim2D.Tools;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using PhySim2D.Tools;
 
 namespace PhySim2D.Collision.Colliders
 {
@@ -11,31 +11,20 @@ namespace PhySim2D.Collision.Colliders
         public KVector2 LStart { get; set; }
 
         [DataMember]
-        public KVector2 LDir { get; set; }
+        public KVector2 LEnd { get; set; }
 
         public Segment(KVector2 start, KVector2 end)
         {
             this.LStart = start;
-            this.LDir = end - start;
+            this.LEnd = end;
             Type = ColliderType.SEGMENT;
             ComputeProperties();
         }
 
-        public KVector2 RetrievePoint(float t)
-        {
-            return LDir * t + LStart;
-        }
-
         public override AABB ComputeAABB()
         {
-               KVector2.Extremity(
-                new List<KVector2>
-                {
-                    Transform.TransformPointLW(LStart),
-                    Transform.TransformPointLW(LDir + LStart)
-                },
-                out KVector2 min,
-                out KVector2 max);
+            KVector2 max = new KVector2(ComputeSupport(KVector2.XPos).X,ComputeSupport(KVector2.YPos).Y);
+            KVector2 min = new KVector2(ComputeSupport(KVector2.XNeg).X, ComputeSupport(KVector2.YNeg).Y);
 
             return new AABB(min, max);
         }
@@ -43,29 +32,25 @@ namespace PhySim2D.Collision.Colliders
 
         public override void ComputeProperties()
         {
-            Centroid = RetrievePoint(0.5f);
+            Centroid = (LStart + LEnd)/2;
         }
 
-        public override KVector2 ComputeSupport(KVector2 dir)
+        public override KVector2 ComputeSupport(KVector2 wDirN)
         {
-            KVector2 bestVertex = Transform.TransformPointLW(LStart);
-            double bestVertexProj = dir * bestVertex;
+            KVector2 lDir = Transform.TransformDirWL(wDirN);
 
-            KVector2 vTrans = Transform.TransformPointLW(LStart + LDir);
-            double proj = dir * vTrans;
+            double projStart = lDir * LStart;
+            double projEnd = lDir * LEnd;
 
-            if (proj > bestVertexProj)
-            {
-                bestVertexProj = proj;
-                bestVertex = vTrans;
-            }
-
-            return bestVertex;
+            if (projStart > projEnd)
+                return Transform.TransformPointLW(LStart);
+                
+            return Transform.TransformPointLW(LEnd);
         }
 
         public override string ToString()
         {
-            return $" { LStart.ToString() } ; { RetrievePoint(1f).ToString() } >";
+            return $" { LStart.ToString() } ; { LEnd.ToString() } >";
         }
     }
 }
