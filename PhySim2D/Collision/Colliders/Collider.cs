@@ -39,7 +39,7 @@ namespace PhySim2D.Collision.Colliders
         /// <returns>AABB box englobing the geometry form of this collider</returns>
         public abstract AABB ComputeAABB();
 
-        public abstract KVector2 ComputeSupport(KVector2 dir);
+        public abstract KVector2 ComputeSupport(KVector2 wDirN);
 
         public abstract void ComputeProperties();
 

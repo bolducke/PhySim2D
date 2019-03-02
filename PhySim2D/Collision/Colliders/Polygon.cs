@@ -51,8 +51,8 @@ namespace PhySim2D.Collision.Colliders
             Face face = new Face()
             {
                 WNormal = KVector2.Normalize(wNormal),
-                WPStart = start,
-                WPEnd = end
+                WStart = start,
+                WEnd = end
             };
 
             return face;

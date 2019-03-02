@@ -57,12 +57,12 @@ namespace PhySim2D.Collision.Narrowphase
             KVector2 refDir = KVector2.Normalize(Face.Direction(refFace));
             int nbClipPoints;
 
-            double offSet1 = refDir * refFace.WPStart;
-            nbClipPoints = CollisionDetection.ClipPointsToLine(incidentFace.WPStart, incidentFace.WPEnd, -refDir, -offSet1, out KVector2[] clipPoints);
+            double offSet1 = refDir * refFace.WStart;
+            nbClipPoints = CollisionDetection.ClipPointsToLine(incidentFace.WStart, incidentFace.WEnd, -refDir, -offSet1, out KVector2[] clipPoints);
 
             if (nbClipPoints < 2) return false;
 
-            double offSet2 = refDir * refFace.WPEnd;
+            double offSet2 = refDir * refFace.WEnd;
             nbClipPoints = CollisionDetection.ClipPointsToLine(clipPoints[0], clipPoints[1], refDir, offSet2, out clipPoints);
 
             if (nbClipPoints < 2) return false;
@@ -71,7 +71,7 @@ namespace PhySim2D.Collision.Narrowphase
             for (int i = 0; i < Math.Min(Config.MaxManifoldPoints, clipPoints.Length); i++)
             {
                 //FinalClipping
-                double separation = KVector2.Dot(clipPoints[i] - refFace.WPStart, refFace.WNormal);
+                double separation = KVector2.Dot(clipPoints[i] - refFace.WStart, refFace.WNormal);
 
                 if (separation < Config.EpsilonsFloat)
                 {
@@ -134,32 +134,32 @@ namespace PhySim2D.Collision.Narrowphase
 
             Face polFace = a.ComputeFace(index);
 
-            KVector2 ldir = b.Transform.TransformNormalWL(Face.Direction(polFace));
-            KVector2 lPStart = b.Transform.TransformPointWL(polFace.WPStart);
-            KVector2 lPEnd = b.Transform.TransformPointWL(polFace.WPEnd);
+            KVector2 lDirN = b.Transform.TransformNormalWL(Face.Direction(polFace));
+            KVector2 lStart = b.Transform.TransformPointWL(polFace.WStart);
+            KVector2 lEnd = b.Transform.TransformPointWL(polFace.WEnd);
 
             //Closest point on segment to circle center
-            double u = (b.LPosition - lPStart) * ldir;
-            double v = (b.LPosition - lPEnd) * -ldir;
+            double u = (b.LPosition - lStart) * lDirN;
+            double v = (b.LPosition - lEnd) * -lDirN;
 
-            KVector2 pos;
+            KVector2 lPos;
 
             if (u < 0)
             {
-                pos = lPStart;
+                lPos = lStart;
             }
             else if (v < 0)
             {
-                pos = lPEnd;
+                lPos = lEnd;
             }
             else
             {
-                pos = lPStart + u / ldir.Length() * ldir;
+                lPos = lStart + u * lDirN;
             }
 
             ContactPoint cp = new ContactPoint
             {
-                WPosition = b.Transform.TransformPointLW(pos),
+                WPosition = b.Transform.TransformPointLW(lPos),
                 WPenetration = -separation,  
             };
 
