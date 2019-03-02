@@ -67,7 +67,18 @@
         public static KVector3 Cross(KVector3 u, KVector3 v)
         {
             return new KVector3(u.Y * v.Z - u.Z * v.Y, u.Z * v.X - u.X * v.Z, u.X * v.Y - u.Y * v.X);
+
         }
         #endregion
+
+        public double Length()
+        {
+            return System.Math.Sqrt(Dot(this, this));
+        }
+
+        public double LengthSquared()
+        {
+            return Dot(this, this);
+        }
     }
 }

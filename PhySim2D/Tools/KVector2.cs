@@ -8,26 +8,18 @@ namespace PhySim2D.Tools
     [DebuggerDisplay("( {X}, {Y} )")]
     internal struct KVector2
     {
+
         private const double DEFAULT_VALUE = 0;
 
         public double X { get; private set; }
         public double Y { get; private set; }
-
-        public static KVector2 Zero
-        {
-            get
-            {
-                return new KVector2(0);
-            }
-        }
-            
-        public static KVector2 One 
-        {
-            get
-            {
-                return new KVector2(1);
-            }
-        }
+         
+        public static readonly KVector2 XPos = new KVector2(1,0);
+        public static readonly KVector2 YPos = new KVector2(0, 1);
+        public static readonly KVector2 XNeg = new KVector2(-1, 0);
+        public static readonly KVector2 YNeg = new KVector2(0, -1);
+        public static readonly KVector2 Zero = new KVector2(0);
+        public static readonly KVector2 One = new KVector2(1);
 
         public KVector2(double f)
         {
@@ -170,6 +162,17 @@ namespace PhySim2D.Tools
         public static KVector2 TransformNormal(KVector2 v, KMatrix3x3Opti mat)
         {
             return Normalize(TransformDir(v,mat));
+        }
+
+        public static KVector2 TransformVector(KVector2 v, KMatrix3x3Opti mat)
+        {
+            KVector2 result = new KVector2
+            {
+                X = mat.A11 * v.X + mat.A12 * v.Y,
+                Y = mat.A21 * v.X + mat.A22 * v.Y
+            };
+
+            return result;
         }
 
         public static KVector2 Lerp(KVector2 a, KVector2 b, double alpha)

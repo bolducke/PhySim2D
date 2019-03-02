@@ -135,6 +135,41 @@ namespace PhySim2D.Tools
 
             return new KMatrix3x3Opti(c11,c12,c21,c22,c13,c23);
         }
+
+        public static KVector2 Multiply(KVector2 A, KMatrix3x3Opti B)
+        {
+            double X = A.X * B.A11 + A.Y * B.A21;
+            double Y = A.X * B.A12 + A.Y * B.A22;
+
+            return new KVector2(X, Y);
+        }
+
+        public static KVector2 Multiply(KMatrix3x3Opti A, KVector2 B)
+        {
+            double X = A.A11 * B.X + A.A12 * B.Y;
+            double Y = A.A21 * B.X + A.A22 * B.Y;
+
+            return new KVector2(X, Y);
+        }
+
+        public static KVector3 Multiply(KVector3 A, KMatrix3x3Opti B)
+        {
+            double X = A.X * B.A11 + A.Y * B.A21;
+            double Y = A.X * B.A12 + A.Y * B.A22;
+            double Z = A.X * B.A13 + A.Y * B.A23 + A.Z;
+
+            return new KVector3(X,Y,Z);
+        }
+
+        public static KVector3 Multiply(KMatrix3x3Opti A, KVector3 B)
+        {
+            double X = A.A11 * B.X + A.A12 * B.Y + A.A13 * B.Z;
+            double Y = A.A21 * B.X + A.A22 * B.Y + A.A23 * B.Z;
+            double Z = B.Z;
+
+            return new KVector3(X, Y, Z);
+        }
+
         #endregion
 
         public static KMatrix3x3Opti operator +(KMatrix3x3Opti A, KMatrix3x3Opti B)
@@ -163,6 +198,26 @@ namespace PhySim2D.Tools
         }
 
         public static KMatrix3x3Opti operator *(KMatrix3x3Opti A, KMatrix3x3Opti B)
+        {
+            return Multiply(A, B);
+        }
+
+        public static KVector3 operator *(KMatrix3x3Opti A, KVector3 B)
+        {
+            return Multiply(A, B);
+        }
+
+        public static KVector3 operator *(KVector3 A, KMatrix3x3Opti B)
+        {
+            return Multiply(A, B);
+        }
+
+        public static KVector2 operator *(KMatrix3x3Opti A, KVector2 B)
+        {
+            return Multiply(A, B);
+        }
+
+        public static KVector2 operator *(KVector2 A, KMatrix3x3Opti B)
         {
             return Multiply(A, B);
         }

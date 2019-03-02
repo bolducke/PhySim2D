@@ -11,11 +11,6 @@ namespace PhySim2D.Collision.Colliders
     [DataContract]
     internal struct AABB
     {
-        public readonly static KVector2 AxisXPos = new KVector2(1, 0);
-        public readonly static KVector2 AxisXNeg = new KVector2(1, 0);
-        public readonly static KVector2 AxisYPos = new KVector2(1, 0);
-        public readonly static KVector2 AxisYNeg = new KVector2(1, 0);
-
         [DataMember]
         public KVector2 Min { get; set; }
 
@@ -32,6 +27,7 @@ namespace PhySim2D.Collision.Colliders
             Min = min;
             Max = max;
         }
+
         /// <summary>
         /// Function who test if AABB are overlapping.
         /// </summary>
@@ -46,12 +42,9 @@ namespace PhySim2D.Collision.Colliders
             return true;
         }
 
-
         public static explicit operator System.Drawing.RectangleF (AABB box)
         {
             return new System.Drawing.RectangleF((float) box.Min.X,(float) box.Min.Y,(float) (box.Max.X - box.Min.X),(float) (box.Max.Y - box.Min.Y));
         }
-
-
     }
 }
