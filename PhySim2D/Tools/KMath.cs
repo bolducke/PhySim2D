@@ -7,8 +7,6 @@ namespace PhySim2D.Tools
 
         public static bool AlmostEquals(double k, double c, double epsilon)
         {
-            k = Math.Abs(k);
-            c = Math.Abs(c);
             double diff = Math.Abs(k - c);
 
             if (diff < epsilon)

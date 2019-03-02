@@ -1,5 +1,8 @@
+using System;
+
 namespace PhySim2D.UI.Views
 {
+    [Flags]
     internal enum DebugViewFlags
     {
     	AABB = 1 << 0, // 00001 == 1

@@ -33,7 +33,7 @@ namespace PhySim2D.UI
             var items = ChckListBxDebugFlags.Items;
             foreach (DebugViewFlags flags in Enum.GetValues(typeof(DebugViewFlags)))
             {
-                items.Add(flags);
+                items.Add(flags, (DebugScene.Flags & flags) == flags);
             }
         }
 
@@ -42,7 +42,7 @@ namespace PhySim2D.UI
             if (e.NewValue == CheckState.Checked)
                 DebugScene.Flags |= (DebugViewFlags) ChckListBxDebugFlags.Items[e.Index];
             else
-                DebugScene.Flags &= ~(DebugViewFlags)ChckListBxDebugFlags.Items[e.Index];
+                DebugScene.Flags &= ~(DebugViewFlags) ChckListBxDebugFlags.Items[e.Index];
 
             DebugScene.Invalidate();
         }

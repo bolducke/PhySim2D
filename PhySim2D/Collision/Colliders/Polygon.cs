@@ -24,11 +24,12 @@ namespace PhySim2D.Collision.Colliders
         {
             KVector2 bestVertex = KVector2.Zero;
             double bestVertexProj = float.MinValue;
-            KVector2 dir = Transform.TransformDirWL(wDirN);
+            KVector2 lDir = Transform.TransformDirWL(wDirN);
+            KVector2 lPos = Transform.TransformPointWL(Transform.Position);
 
             for (int i = 0; i < Vertices.Count; i++)
             {
-                double proj = KVector2.Dot(dir, Vertices[i]);
+                double proj = KVector2.Dot(lDir, Vertices[i] - lPos);
 
                 if (proj > bestVertexProj)
                 {
@@ -47,10 +48,12 @@ namespace PhySim2D.Collision.Colliders
             KVector2 end = Transform.TransformPointLW(Vertices[nextIndex]);
             KVector2 wNormal = KVector2.PerpCW(end - start);
 
-            Face face;
-            face.WNormal = KVector2.Normalize(wNormal);
-            face.WPStart = start;
-            face.WPEnd = end;
+            Face face = new Face()
+            {
+                WNormal = KVector2.Normalize(wNormal),
+                WPStart = start,
+                WPEnd = end
+            };
 
             return face;
         }
@@ -70,10 +73,10 @@ namespace PhySim2D.Collision.Colliders
                 //Centroid
                 center += Vertices[i];
             }
-           
+
             //Centroid
             Centroid = center * (1 / Vertices.Count);
-            
+
             //OOB
             _BoundingBoxRel = new KVector2[] {
                 min,
@@ -81,11 +84,11 @@ namespace PhySim2D.Collision.Colliders
                 new KVector2(max.X, min.Y),
                 new KVector2(min.X, max.Y)
             };
-        
+
         }
 
         public override AABB ComputeAABB()
-        { 
+        {
             KVector2 max, min;
             max = min = Transform.TransformPointLW(_BoundingBoxRel[0]);
 

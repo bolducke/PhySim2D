@@ -74,8 +74,7 @@ namespace PhySim2D.Tools
                     continue;
                 }
 
-                if (nextValue * oldValue < 0)
-                    convex = false;
+                convex &= nextValue * oldValue >= 0;
 
                 oldValue = nextValue;
             }
