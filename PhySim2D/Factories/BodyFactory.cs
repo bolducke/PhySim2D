@@ -11,9 +11,9 @@ namespace PhySim2D.Factories
 
         }
 
-        public static Rigidbody CreateCircleBody(float radius, MassData massData, KTransform t)
+        public static Rigidbody CreateCircleBody(MassData massData, KTransform t)
         {
-            return new Rigidbody(new Circle(KVector2.Zero, radius), massData, t);
+            return new Rigidbody(new Circle(KVector2.Zero), massData, t);
         }
 
         public static Rigidbody CreateSegmentBody(KVector2 start, KVector2 end, MassData massData, KTransform t)

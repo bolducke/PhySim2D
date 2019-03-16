@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -17,9 +17,9 @@
     <Folder Include="Tools\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="UnitTest1.cs" />
+    <ProjectReference Include="..\PhySim2D\PhySim2D.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PhySim2D\PhySim2D.csproj" />
+    <None Remove="packages.config" />
   </ItemGroup>
 </Project>

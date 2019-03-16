@@ -101,6 +101,7 @@
             this.DebugScene.Name = "DebugScene";
             this.DebugScene.Size = new System.Drawing.Size(760, 528);
             this.DebugScene.TabIndex = 5;
+            this.DebugScene.TimeStep += new System.EventHandler<Components.TimeStepEventArgs>(this.DebugScene_TimeStep);
             // 
             // PhysicVisualization
             // 

@@ -1,5 +1,4 @@
 ﻿using PhySim2D.Tools;
-using System;
 using System.Runtime.Serialization;
 
 namespace PhySim2D.Collision.Colliders
