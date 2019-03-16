@@ -8,80 +8,70 @@ namespace PhySim2D.Collision.Narrowphase
 {
     class CircleCollision
     {
+        //FIXME: Bad CircleVsCircle test
+
         private static bool CircleVsCircle(ref Contact contact)
         {
             Circle a = (Circle)contact.FixtureA.Collider;
             Circle b = (Circle)contact.FixtureB.Collider;
+            //In the local worl A is a unit circle and B is an ellipse
 
-            KVector2 cA = a.Transform.TransformPointLW(a.LPosition);
-            KVector2 cB = b.Transform.TransformPointLW(b.LPosition);
+            KVector2 cB = a.Transform.TransformPointWL(b.Transform.TransformPointLW(b.LPosition));
+            KVector2 axisA = a.Transform.TransformDirWL(b.Transform.TransformDirLW(KVector2.XPos));
+            KVector2 axisB = a.Transform.TransformDirWL(b.Transform.TransformDirLW(KVector2.YPos));
 
-            KVector2 dir = cA - cB;
-            float r = a.Radius + b.Radius;
+            KTransform kTransform = new KTransform(cB, a.Transform.Rotation + b.Transform.Rotation, KVector2.One);
+            KVector2 P = kTransform.TransformPointWL(a.LPosition);
 
-            if (dir.LengthSquared() < r * r)
+            double t = Math.PI / 4f;
+
+            KVector2 scale = new KVector2(axisA.Length(), axisB.Length());
+
+            KVector2 potCp = new KVector2();
+
+            for (int i = 0; i < 50; i++)
             {
-                ContactPoint cp = new ContactPoint
-                {
-                    WPosition = (cA + cB) * 0.5f,
-                    WPenetration = dir.Length()
-                };
+                potCp = new KVector2(scale.X * Math.Cos(t), scale.Y * Math.Sin(t));
 
-                contact.Manifold.WNormal = KVector2.Normalize(dir);
-                contact.Manifold.ContactPoints[0] = cp;
-                contact.Manifold.Count = 1;
+                double ex = (scale.X * scale.X) - (scale.Y * scale.Y) * Math.Pow(Math.Cos(t), 3) / scale.X;
+                double ey = (scale.Y * scale.Y) - (scale.X * scale.X) * Math.Pow(Math.Sin(t), 3) / scale.Y;
+                KVector2 e = new KVector2(ex, ey);
 
-                return true;
+                KVector2 r = potCp - e;
+                KVector2 q = P - e;
+                double delta_c = r.Length() * Math.Asin((r.X * q.Y - r.Y * q.X) / (r.Length() * q.Length()));
+                double delta_t = delta_c / Math.Sqrt(scale.LengthSquared() - potCp.LengthSquared());
+
+                t += delta_t;
+                t += Math.Min(Math.PI / 2, Math.Max(0, t));
+
             }
 
-            return false;
-        }
+            KVector2 wPos = a.Transform.TransformPointLW(kTransform.TransformPointLW(potCp));
+            KVector2 cDir = P - potCp;
+            KVector2 wDir = b.Transform.TransformDirLW(KVector2.Normalize(cDir) * (1 - cDir.Length()));
 
-        public static bool CircleVsSegment(ref Contact contact)
-        {
-            Circle a = (Circle)contact.FixtureA.Collider;
-            Segment b = (Segment)contact.FixtureB.Collider;
-
-            KVector2 start = b.Transform.TransformPointLW(b.LStart);
-            KVector2 dir = b.Transform.TransformDirLW(b.LDir);
-            KVector2 end = dir + start;
-            KVector2 positionA = a.Transform.TransformPointLW(a.LPosition);
-
-            //Closest point on segment to cercle center
-            double u = (positionA - start) * dir;
-            double v = (start + dir - positionA) * dir;
-
-            KVector2 wPos;
-
-            if (u < 0)
-            {
-                wPos = start;
-            }
-            else if (v < 0)
-            {
-                wPos = end;
-            }
-            else
-            {
-                wPos = 1/dir.LengthSquared() * (u * start + v * end);
-            }
-
-            KVector2 cSegDir = positionA - wPos;
-
-            if (cSegDir.LengthSquared() > a.Radius + a.Radius)
+            if (wDir.Length() >= 1)
                 return false;
 
             ContactPoint cp = new ContactPoint
             {
                 WPosition = wPos,
-                WPenetration = a.Radius - cSegDir.Length(),
+                WPenetration = wDir.Length()
             };
 
-            contact.Manifold.WNormal = KVector2.Normalize(dir);
+            contact.Manifold.WNormal = KVector2.Normalize(wDir);
+            contact.Manifold.ContactPoints[0] = cp;
             contact.Manifold.Count = 1;
 
             return true;
+        }
 
+        public static bool CircleVsSegment(ref Contact contact)
+        {
+            Fixture.Swap(ref contact.FixtureA, ref contact.FixtureB);
+
+            return SegmentCollision.SegmentVsCircle(ref contact);
         }
 
         public static bool CircleVsPolygon(ref Contact contact)
