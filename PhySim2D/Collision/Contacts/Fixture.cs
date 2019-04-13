@@ -4,9 +4,9 @@ namespace PhySim2D.Dynamics
 {
     internal struct Fixture
     {
-        public Rigidbody Body;
+        public Rigidbody Body { get; set; }
 
-        public Collider Collider;
+        public Collider Collider { get; set; }
 
         public Fixture(Rigidbody body, Collider collider)
         {

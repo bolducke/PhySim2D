@@ -47,6 +47,7 @@ namespace PhySim2D.Dynamics.Constraint
             KVector2 normal = -KVector2.Normalize(bodyA.State.Transform.TransformPointLW(bodyA.MassData.CenterOfMass) - bodyB.State.Transform.TransformPointLW(bodyB.MassData.CenterOfMass));
             KVector2 relVitAB = bodyB.State.Velocity + bodyB.State.AngVelocity % rB - bodyA.State.Velocity - bodyA.State.AngVelocity % rA;
 
+
             double rAXwNormal = (bodyA.MassData.InvInertia * (rA % normal) * (rA % normal));
             double rBXwNormal = (bodyB.MassData.InvInertia * (rB % normal) * (rB % normal));
 
